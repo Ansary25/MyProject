@@ -1,0 +1,27 @@
+{   
+    "facts"    :   [
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Sales",                            
+                            "table_name" : "fact_olist_sales",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Gold/Hudi/fact_olist_sales/",
+                            "columns"    : ["date_skey","customer_skey","order_skey","product_skey","seller_skey","order_purchase_timestamp","order_purchase_month","product_category_name_english","sales_quantity","net_price","net_freight_value","net_sales_amount","customer_state","customer_state_code","load_date"],
+                            "recordKey"  : "date_skey,customer_skey,order_skey,product_skey,seller_skey",
+                            "partitionKey"  : "order_purchase_month",
+                            "precombineKey" : "load_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Payments",                            
+                            "table_name" : "fact_olist_order_payments",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Gold/Hudi/fact_olist_order_payments/",
+                            "columns"    : ["date_skey","customer_skey","order_skey","order_status","payment_approved_at","order_payment_month","payment_sequential","payment_type","payment_value","load_date"],
+                            "recordKey"  : "date_skey,customer_skey,order_skey,payment_sequential",
+                            "partitionKey"  : "order_payment_month",
+                            "precombineKey" : "load_date",
+                            "operationType"  : "upsert"
+                        }
+                    ]
+}

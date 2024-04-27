@@ -1,0 +1,138 @@
+{   
+    "bronze"    :   [
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Customers",
+                            "table_name" : "bronze_olist_customers",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_customers/",
+                            "columns"    : ["customer_id", "customer_email_id", "customer_state", "customer_state_code", "load_date"],
+                            "timestamp_format" : ""
+                        },
+
+                        {   
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Orders",
+                            "table_name" : "bronze_olist_orders",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_orders/",
+                            "columns"    : ["order_id", "customer_id", "order_status", "order_purchase_timestamp", "order_approved_at", "order_delivered_carrier_date", "order_delivered_customer_date", "order_estimated_delivery_date", "load_date"],
+                            "timestamp_format" : "dd-MM-yyyy hh:mm:ss a"
+                        },
+
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Products",
+                            "table_name" : "bronze_olist_products",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_products/",
+                            "columns"    : ["product_id", "seller_id", "product_category_name", "product_category_name_english", "price", "freight_value", "product_name_length", "product_description_length", "product_photos_qty", "product_weight_g", "product_length_cm", "product_height_cm", "product_width_cm", "load_date"],
+                            "timestamp_format" : ""
+                        },
+
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Sellers",
+                            "table_name" : "bronze_olist_sellers",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_sellers/",
+                            "columns"    : ["seller_id", "seller_state", "seller_state_code", "load_date"],
+                            "timestamp_format" : ""
+                        },
+
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Items",
+                            "table_name" : "bronze_olist_order_items",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_order_items/",
+                            "columns"    : ["order_id", "order_item_id", "product_id", "seller_id", "shipping_limit_date", "price", "freight_value", "load_date"],
+                            "timestamp_format" : "dd-MM-yyyy hh:mm:ss a"
+                        },
+                        
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Payments",
+                            "table_name" : "bronze_olist_order_payments",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_order_payments/",
+                            "columns"    : ["order_id", "payment_sequential", "payment_type", "payment_value", "load_date"],
+                            "timestamp_format" : ""
+                        },
+
+                        {
+                            "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Ratings",
+                            "table_name" : "bronze_olist_order_ratings",
+                            "tablePath"  : "gs://olist-ecomm-lakehouse/Bronze/Hudi/bronze_olist_order_ratings/",
+                            "columns"    : ["rating_id", "order_id", "rating_score", "rating_survey_creation_date", "rating_survey_answer_timestamp", "load_date"],
+                            "timestamp_format" : "dd-MM-yyyy hh:mm:ss a"
+                        }
+                    ],
+
+        "silver"  : [
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Customers",   
+                            "table_name" : "silver_olist_customers",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_customers/",
+                            "recordKey"  : "customer_id",
+                            "partitionKey"  : "customer_state",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Orders",   
+                            "table_name" : "silver_olist_orders",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_orders/",
+                            "recordKey"  : "order_id,customer_id",
+                            "partitionKey"  : "order_status",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Products",   
+                            "table_name" : "silver_olist_products",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_products/",
+                            "recordKey"  : "product_id,seller_id",
+                            "partitionKey"  : "product_category_name_english",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Sellers",   
+                            "table_name" : "silver_olist_sellers",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_sellers/",
+                            "recordKey"  : "seller_id",
+                            "partitionKey"  : "seller_state",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Items",   
+                            "table_name" : "silver_olist_order_items",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_order_items/",
+                            "recordKey"  : "order_id,product_id,seller_id",
+                            "partitionKey"  : "shipping_year",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Payments",   
+                            "table_name" : "silver_olist_order_payments",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_order_payments/",
+                            "recordKey"  : "order_id,payment_sequential",
+                            "partitionKey"  : "payment_type",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        },
+
+                        {   "sys_name"   : "Olist",
+                            "app_nm"     : "Order_Ratings",   
+                            "table_name" : "silver_olist_order_ratings",
+                            "basePath"   : "gs://olist-ecomm-lakehouse/Silver/Hudi/silver_olist_order_ratings/",
+                            "recordKey"  : "rating_id,order_id",
+                            "partitionKey"  : "rating_score",
+                            "precombineKey" : "last_update_date",
+                            "operationType"  : "upsert"
+                        }
+                    ]
+}
